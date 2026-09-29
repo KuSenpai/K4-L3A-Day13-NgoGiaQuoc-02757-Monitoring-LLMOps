@@ -3,11 +3,27 @@ primary_slo:
   name: fast_successful_requests
   window: 28d
   sli:
+    # Request "tốt" = trả response thành công VÀ latency <= 3000 ms (khớp threshold panel latency).
     good_event: 'event == "response_sent" and latency_ms <= 3000'
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  error_budget:
+    # 0.5% của cửa sổ 28 ngày = 0.005 * 28 * 24 * 60 phút
+    minutes_per_window: 201.6
+    # Theo số request: 0.5% tổng request. Ví dụ 10,000 request / 28 ngày -> tối đa 50 request lỗi hoặc > 3000 ms.
+    example_requests_per_window: 10000
+    example_bad_requests_allowed: 50
+  burn_rate_alerts:
+    # Burn rate = (tỷ lệ bad event quan sát) / 0.5%. Burn 14.4 trong 1h tiêu ~2% budget của 28 ngày.
+    fast_burn: {burn_rate: 14.4, long_window: 1h, short_window: 5m}
+    slow_burn: {burn_rate: 6, long_window: 6h, short_window: 30m}
+  rationale: >-
+    Baseline đo trên máy lab (xem submission/REPORT.md): P50 ~150 ms, P95 ~160 ms khi prompt
+    đã cache và ~1.2 s khi cache nguội (fetch prompt từ Langfuse), TTFT P95 50 ms, 0% lỗi.
+    Ngưỡng 3000 ms giữ đúng contract dashboard và cho headroom > 2x so với P95 xấu nhất ở
+    baseline; mục tiêu 99.5% (thay vì 99.9%) vì LLM/vector store là dependency ngoài có độ
+    trễ dao động. Cảnh báo sớm ở 2000 ms nằm trong config/alert_rules.yaml.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

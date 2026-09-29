@@ -1,25 +1,35 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: HighLatencyP95
+    severity: P2-warning
+    condition: 'percentile(latency_ms of event == "response_sent", 95) over 5m > 2000'
+    duration: 5m
     type: symptom-based
+    slo: fast_successful_requests (latency_ms <= 3000, 99.5% / 28d)
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-l3a-oncall'
+    owner: ngo-gia-quoc (on-call AI platform)
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: HighErrorRateOrRetrievalFailure
+    severity: P1-critical
+    condition: >-
+      count(event == "request_failed") / count(event == "request_received") * 100 over 5m > 2
+      OR count(tool_success == true) / count(tool_success != null) * 100 over 5m < 90
+    duration: 5m
     type: symptom-based
+    slo: fast_successful_requests + guardrail retrieval_success_rate_pct_min=90
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-l3a-incidents'
+    owner: ngo-gia-quoc (on-call AI platform)
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: CostBurnSpike
+    severity: P2-warning
+    condition: >-
+      sum(cost_usd of event == "response_sent") over 1h > 0.21
+      OR avg(tokens_out of event == "response_sent") over 15m > 2 * avg(tokens_out) over previous 24h
+    duration: 15m
     type: symptom-based
+    slo: guardrail daily_cost_usd_max=2.5 (0.21 USD/h ~= 2x tốc độ chi tiêu cho phép)
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-l3a-oncall'
+    owner: ngo-gia-quoc (on-call AI platform + FinOps)
     runbook: docs/alerts.md#alert-3
