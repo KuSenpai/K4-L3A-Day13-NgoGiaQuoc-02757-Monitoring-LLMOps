@@ -8,7 +8,7 @@
 - **MSSV:** 02757
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/KuSenpai/K4-L3A-Day13-NgoGiaQuoc-02757-Monitoring-LLMOps
-- **Commit SHA cuối:** _(điền sau commit cuối)_
+- **Commit SHA cuối:** [`adf29aefc3e7ef7be1ecf89b7185b9aa202edca9`](https://github.com/KuSenpai/K4-L3A-Day13-NgoGiaQuoc-02757-Monitoring-LLMOps/commit/adf29aefc3e7ef7be1ecf89b7185b9aa202edca9) (commit chứa toàn bộ source, config và evidence; commit sau đó chỉ cập nhật dòng SHA này trong report)
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-02757` (Langfuse Cloud, region US)
 
@@ -108,10 +108,10 @@
 
 ## 9. Checklist trước khi nộp
 
-- [ ] Kết quả và evidence thuộc commit SHA cuối.
+- [x] Kết quả và evidence thuộc commit SHA cuối.
 - [x] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
 - [x] Incident evidence nối đúng metric → log → trace.
-- [ ] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
+- [x] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
 - [x] Repository chạy lại được theo README.
 - [x] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
 - [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
